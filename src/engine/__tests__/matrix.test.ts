@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+
 import { createEmptyMatrix, clearLines, placePiece, getDropPosition } from '../matrix';
 import { SHAPES } from '../srs';
 
@@ -27,7 +28,7 @@ describe('Matrix Operations', () => {
   });
 
   it('clears lines and adds empty ones at the top', () => {
-    let matrix = createEmptyMatrix();
+    const matrix = createEmptyMatrix();
     // Fill bottom two rows
     for (let x = 0; x < 10; x++) {
       matrix[38][x] = 'GARBAGE';

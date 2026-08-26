@@ -1,4 +1,4 @@
-import { Matrix, PieceType, Point, RotationState, KickOffset, Cell } from './types';
+import type { Matrix, PieceType, Point, RotationState, KickOffset, Cell } from './types';
 
 // Standard Tetromino shapes in their spawn (0) orientation.
 // Bounding boxes: I (4x4), O (2x2), others (3x3).

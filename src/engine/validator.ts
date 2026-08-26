@@ -1,4 +1,4 @@
-import { Matrix, Point, RotationState, TSpinResult, TSpinType, LockContext } from './types';
+import type { Matrix, Point, TSpinResult, TSpinType, LockContext } from './types';
 
 function isOccupied(matrix: Matrix, x: number, y: number): boolean {
   // Out of bounds is considered occupied (for wall kicks and corner checks)
@@ -73,7 +73,7 @@ export function evaluateTSpin(context: LockContext, matrix: Matrix): TSpinResult
       break;
   }
 
-  let type: TSpinType = 'None';
+  let type: TSpinType;
 
   if (frontA && frontB) {
     type = 'Regular';
@@ -87,8 +87,10 @@ export function evaluateTSpin(context: LockContext, matrix: Matrix): TSpinResult
     }
   }
 
+  const isB2B = type === 'Mini' || type === 'Regular';
+
   return {
     type,
-    isB2BEligible: type !== 'None',
+    isB2BEligible: isB2B,
   };
 }

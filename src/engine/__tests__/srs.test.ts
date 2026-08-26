@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+
 import { SHAPES, rotateShape, checkCollision, tryRotation } from '../srs';
 import { createEmptyMatrix } from '../matrix';
 

@@ -1,4 +1,4 @@
-import { Matrix, Point, Cell } from './types';
+import type { Matrix, Point, Cell } from './types';
 import { checkCollision } from './srs';
 
 /**
