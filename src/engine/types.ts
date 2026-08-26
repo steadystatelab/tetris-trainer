@@ -1,37 +1,47 @@
+/**
+ * Core types for the Tetris engine.
+ * The matrix is 40 rows x 10 columns, with the top-left being (0,0).
+ * Rows 0-19 are the invisible buffer zone, 20-39 are visible.
+ */
+
 export type PieceType = 'I' | 'J' | 'L' | 'O' | 'S' | 'T' | 'Z';
+export type Cell = PieceType | 'GARBAGE' | null;
+export type Matrix = Cell[][];
 
-// 0 = Empty, 1-7 = Tetromino types, 8 = Garbage / Grey block
-export type MinoValue = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
+/**
+ * Rotation state according to SRS:
+ * 0: Spawn state
+ * 1: State rotated 90 deg clockwise from Spawn
+ * 2: State rotated 180 deg from Spawn
+ * 3: State rotated 90 deg counter-clockwise from Spawn
+ */
+export type RotationState = 0 | 1 | 2 | 3;
 
-// Standard matrix: 20 visible rows x 10 columns (top is row 0, bottom is row 19)
-// Buffer zone: 20 hidden rows above (rows 0-19 buffer, 20-39 visible if using 40-row array)
-export type Matrix = MinoValue[][];
-
-export type RotationState = 0 | 1 | 2 | 3; // 0 = Spawn, 1 = R (90° CW), 2 = 2 (180°), 3 = L (270° CCW)
-
+/**
+ * Coordinate in the matrix (top-left is 0,0).
+ */
 export interface Point {
-  x: number;
-  y: number;
+  x: number; // Column index (0-9)
+  y: number; // Row index (0-39)
 }
 
-export interface ActivePiece {
-  type: PieceType;
-  position: Point; // Bounding box top-left corner on the matrix
-  rotation: RotationState;
-}
+/**
+ * Kick offset as [x, y]. Note that our coordinate system has y increasing DOWN,
+ * so standard SRS kicks (where +y is UP) will need their y-values inverted when applied.
+ */
+export type KickOffset = [number, number];
 
-export type KickOffset = [number, number]; // [dx, dy] where +x is right, +y is up in standard SRS
-
-export type TSpinResult =
-  | 'NONE'
-  | 'T_SPIN_MINI'
-  | 'T_SPIN_SINGLE'
-  | 'T_SPIN_DOUBLE'
-  | 'T_SPIN_TRIPLE';
+export type TSpinType = 'None' | 'Mini' | 'Regular';
 
 export interface LockContext {
-  piece: ActivePiece;
-  lastActionWasRotation: boolean;
-  kickIndexUsed: number; // 0 = basic rotation, 1..4 = kick table test index
-  linesCleared: number;
+  piece: PieceType;
+  position: Point; // Top-left of the piece's bounding box
+  rotation: RotationState;
+  lastMoveWasRotation: boolean;
+  kickIndex: number; // 0 to 4, representing which kick offset succeeded
+}
+
+export interface TSpinResult {
+  type: TSpinType;
+  isB2BEligible: boolean; // True if Mini or Regular
 }
